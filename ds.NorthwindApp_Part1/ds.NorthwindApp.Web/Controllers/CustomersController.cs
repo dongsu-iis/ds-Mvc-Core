@@ -1,27 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ds.NorthwindApp.Web.Models;
+using ds.NorthwindApp.Web.Models.Interface;
 
 namespace ds.NorthwindApp.Web.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly NorthwindContext _context;
 
-        public CustomersController(NorthwindContext context)
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomersController(ICustomerRepository customerRepository)
         {
-            _context = context;
+            _customerRepository = customerRepository;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(await _customerRepository.GetAllAsync());
         }
 
         // GET: Customers/Details/5
@@ -32,8 +30,7 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var customers = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            var customers = await _customerRepository.GetOneAsync(id);
             if (customers == null)
             {
                 return NotFound();
@@ -57,8 +54,7 @@ namespace ds.NorthwindApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customers);
-                await _context.SaveChangesAsync();
+                await _customerRepository.CreateAsync(customers);
                 return RedirectToAction(nameof(Index));
             }
             return View(customers);
@@ -72,7 +68,7 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var customers = await _context.Customers.FindAsync(id);
+            var customers = await _customerRepository.GetOneAsync(id);
             if (customers == null)
             {
                 return NotFound();
@@ -96,12 +92,12 @@ namespace ds.NorthwindApp.Web.Controllers
             {
                 try
                 {
-                    _context.Update(customers);
-                    await _context.SaveChangesAsync();
+                    await _customerRepository.UpdateAsync(customers);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomersExists(customers.CustomerId))
+                    if (!await _customerRepository
+                        .ExistsAsync(customers.CustomerId))
                     {
                         return NotFound();
                     }
@@ -123,8 +119,7 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var customers = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            var customers = await _customerRepository.GetOneAsync(id);
             if (customers == null)
             {
                 return NotFound();
@@ -138,15 +133,9 @@ namespace ds.NorthwindApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var customers = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customers);
-            await _context.SaveChangesAsync();
+            var customers = await _customerRepository.GetOneAsync(id);
+            await _customerRepository.DeleteAsync(customers);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CustomersExists(string id)
-        {
-            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

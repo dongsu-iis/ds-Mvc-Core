@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ds.NorthwindApp.Web.Models;
+using ds.NorthwindApp.Web.Models.Interface;
+using ds.NorthwindApp.Web.Models.Repository;
 
 namespace ds.NorthwindApp.Web
 {
@@ -27,9 +24,14 @@ namespace ds.NorthwindApp.Web
         {
             services.AddControllersWithViews();
 
+            // DB Context
             services.AddDbContext<NorthwindContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("northwind"))
            );
+
+            // Repository
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
 
         }
 
@@ -59,6 +61,8 @@ namespace ds.NorthwindApp.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }

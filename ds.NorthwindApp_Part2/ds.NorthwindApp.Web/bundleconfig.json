@@ -1,0 +1,62 @@
+[
+    {
+        "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+        "inputFiles": [
+            "node_modules/bootswatch/dist/materia/bootstrap.min.css"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+        "inputFiles": [
+            "node_modules/bootstrap/dist/js/bootstrap.min.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+        "inputFiles": [
+            "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/lib/jquery/dist/jquery.min.js",
+        "inputFiles": [
+            "node_modules/jquery/dist/jquery.min.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+        "inputFiles": [
+            "node_modules/jquery-validation/dist/jquery.validate.min.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+        "inputFiles": [
+            "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        }
+    }
+]

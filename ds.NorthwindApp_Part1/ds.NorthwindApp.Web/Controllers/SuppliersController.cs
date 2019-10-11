@@ -1,27 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ds.NorthwindApp.Web.Models;
+using ds.NorthwindApp.Web.Models.Interface;
 
 namespace ds.NorthwindApp.Web.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly ISupplierRepository _supplierRepository;
 
-        public SuppliersController(NorthwindContext context)
+        public SuppliersController(ISupplierRepository supplierRepository)
         {
-            _context = context;
+            _supplierRepository = supplierRepository;
         }
 
         // GET: Suppliers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Suppliers.ToListAsync());
+            return View(await _supplierRepository.GetAllAsync());
         }
 
         // GET: Suppliers/Details/5
@@ -32,8 +29,9 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var suppliers = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.SupplierId == id);
+            var suppliers = await _supplierRepository.GetOneAsync(id.Value);
+
+
             if (suppliers == null)
             {
                 return NotFound();
@@ -57,8 +55,7 @@ namespace ds.NorthwindApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(suppliers);
-                await _context.SaveChangesAsync();
+                await _supplierRepository.CreateAsync(suppliers);
                 return RedirectToAction(nameof(Index));
             }
             return View(suppliers);
@@ -72,7 +69,7 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var suppliers = await _context.Suppliers.FindAsync(id);
+            var suppliers = await _supplierRepository.GetOneAsync(id.Value);
             if (suppliers == null)
             {
                 return NotFound();
@@ -96,12 +93,11 @@ namespace ds.NorthwindApp.Web.Controllers
             {
                 try
                 {
-                    _context.Update(suppliers);
-                    await _context.SaveChangesAsync();
+                    await _supplierRepository.UpdateAsync(suppliers);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SuppliersExists(suppliers.SupplierId))
+                    if (!await _supplierRepository.ExistsAsync(suppliers.SupplierId))
                     {
                         return NotFound();
                     }
@@ -123,8 +119,8 @@ namespace ds.NorthwindApp.Web.Controllers
                 return NotFound();
             }
 
-            var suppliers = await _context.Suppliers
-                .FirstOrDefaultAsync(m => m.SupplierId == id);
+            var suppliers = await _supplierRepository.GetOneAsync(id.Value);
+
             if (suppliers == null)
             {
                 return NotFound();
@@ -138,15 +134,11 @@ namespace ds.NorthwindApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var suppliers = await _context.Suppliers.FindAsync(id);
-            _context.Suppliers.Remove(suppliers);
-            await _context.SaveChangesAsync();
+
+            var suppliers = await _supplierRepository.GetOneAsync(id);
+            await _supplierRepository.DeleteAsync(suppliers);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SuppliersExists(int id)
-        {
-            return _context.Suppliers.Any(e => e.SupplierId == id);
-        }
     }
 }
