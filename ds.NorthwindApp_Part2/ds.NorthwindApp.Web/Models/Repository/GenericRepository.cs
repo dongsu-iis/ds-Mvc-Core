@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ds.NorthwindApp.Web.Models.Repository
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
+    public class GenericRepository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
 

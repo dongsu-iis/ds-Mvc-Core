@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace ds.NorthwindApp.Web.Models.Interface
 {
-    public interface ISupplierRepository : IGenericRepository<Suppliers>
+    public interface ISupplierRepository : IRepository<Suppliers>
     {
 
         Task CreateAsync(Suppliers supplier);
