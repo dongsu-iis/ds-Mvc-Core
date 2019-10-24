@@ -30,7 +30,7 @@ namespace ds.NorthwindApp.Web
            );
 
             // Repository
-            services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
         }
 

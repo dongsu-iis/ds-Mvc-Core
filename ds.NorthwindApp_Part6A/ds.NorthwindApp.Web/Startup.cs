@@ -38,8 +38,8 @@ namespace ds.NorthwindApp.Web
             
 
             // Service
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ISupplierService, SupplierService>();
 
         }
 

@@ -41,8 +41,8 @@ namespace ds.NorthwindApp.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Service
-            services.AddScoped<ICustomerService, CustomerService>();
-            services.AddScoped<ISupplierService, SupplierService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ISupplierService, SupplierService>();
 
         }
 

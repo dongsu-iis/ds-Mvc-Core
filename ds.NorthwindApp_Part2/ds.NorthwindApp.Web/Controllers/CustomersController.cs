@@ -9,9 +9,9 @@ namespace ds.NorthwindApp.Web.Controllers
     public class CustomersController : Controller
     {
 
-        private readonly IGenericRepository<Customers> _customerRepository;
+        private readonly IRepository<Customers> _customerRepository;
 
-        public CustomersController(IGenericRepository<Customers> customerRepository)
+        public CustomersController(IRepository<Customers> customerRepository)
         {
             _customerRepository = customerRepository;
         }

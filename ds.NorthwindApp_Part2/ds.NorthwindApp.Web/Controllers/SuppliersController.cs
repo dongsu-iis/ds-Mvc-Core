@@ -8,9 +8,9 @@ namespace ds.NorthwindApp.Web.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly IGenericRepository<Suppliers> _supplierRepository;
+        private readonly IRepository<Suppliers> _supplierRepository;
 
-        public SuppliersController(IGenericRepository<Suppliers> supplierRepository)
+        public SuppliersController(IRepository<Suppliers> supplierRepository)
         {
             _supplierRepository = supplierRepository;
         }
