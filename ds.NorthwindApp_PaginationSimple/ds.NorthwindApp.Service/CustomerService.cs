@@ -102,5 +102,15 @@ namespace ds.NorthwindApp.Service
             return await _repository.GetByCondition(x => x.CustomerId == id).AnyAsync();
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _repository.GetAll().CountAsync();
+        }
+
+        public async Task<IEnumerable<Customers>> GetAllPaginatedAsync(int currentPage, int pageSize = 10)
+        {
+            return await _repository.GetAllPaginated(currentPage, pageSize).ToListAsync();
+            
+        }
     }
 }

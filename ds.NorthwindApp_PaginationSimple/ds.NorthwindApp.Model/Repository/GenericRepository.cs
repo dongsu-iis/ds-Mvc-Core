@@ -43,5 +43,10 @@ namespace ds.NorthwindApp.Model.Repository
         {
             return db.Set<TEntity>();
         }
+
+        public IQueryable<TEntity> GetAllPaginated(int currentPage, int pageSize = 10)
+        {
+            return db.Set<TEntity>().Skip((currentPage - 1) * pageSize).Take(pageSize);
+        }
     }
 }

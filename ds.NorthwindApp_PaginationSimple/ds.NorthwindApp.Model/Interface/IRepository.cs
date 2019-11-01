@@ -5,18 +5,22 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ds.NorthwindApp.Model.Interface {
+namespace ds.NorthwindApp.Model.Interface
+{
     public interface IRepository<TEntity>
-        where TEntity : class {
+        where TEntity : class
+    {
 
-            void Create (TEntity instance);
+        void Create(TEntity instance);
 
-            void Update (TEntity instance);
+        void Update(TEntity instance);
 
-            void Delete (TEntity instance);
+        void Delete(TEntity instance);
 
-            IQueryable<TEntity> GetAll ();
+        IQueryable<TEntity> GetAll();
 
-            IQueryable<TEntity> GetByCondition (Expression<Func<TEntity, bool>> expression);
-        }
+        IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression);
+
+        IQueryable<TEntity> GetAllPaginated(int currentPage, int pageSize = 10);
+    }
 }

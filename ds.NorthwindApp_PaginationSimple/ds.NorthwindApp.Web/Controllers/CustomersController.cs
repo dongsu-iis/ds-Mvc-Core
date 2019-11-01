@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using ds.NorthwindApp.Model;
 using ds.NorthwindApp.Service.Interface;
 using ds.NorthwindApp.Web.Infrastructure.ActionFilters;
+using ds.NorthwindApp.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,9 +19,18 @@ namespace ds.NorthwindApp.Web.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _customerService.GetAllAsync());
+
+            var pageNumber = page ?? 1;
+            var pageSize = 10;
+
+            var viewModel = new PaginationViewModel();
+            viewModel.Count = await _customerService.GetCountAsync();
+            viewModel.CustomersData = await _customerService.GetAllPaginatedAsync(pageNumber, pageSize);
+            viewModel.CurrentPage = pageNumber;
+
+            return View(viewModel);
         }
 
         // GET: Customers/Details/5

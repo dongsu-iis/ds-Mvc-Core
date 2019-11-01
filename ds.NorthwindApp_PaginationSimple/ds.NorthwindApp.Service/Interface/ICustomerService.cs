@@ -19,5 +19,9 @@ namespace ds.NorthwindApp.Service.Interface
         Task<IEnumerable<Customers>> GetAllAsync();
 
         Task<bool> ExistAsync(string id);
+
+        Task<int> GetCountAsync();
+
+        Task<IEnumerable<Customers>> GetAllPaginatedAsync(int currentPage, int pageSize = 10);
     }
 }
