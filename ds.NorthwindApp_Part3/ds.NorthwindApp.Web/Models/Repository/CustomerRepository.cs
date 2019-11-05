@@ -13,61 +13,16 @@ namespace ds.NorthwindApp.Web.Models.Repository
         {
         }
 
-        public async Task CreateAsync(Customers customer)
-        {
-            if (customer == null)
-            {
-                throw new ArgumentNullException("customer");
-            }
-            else
-            {
-                this.Create(customer);
-                await SaveAsync();
-            }
-        }
-
-
-        public async Task UpdateAsync(Customers customer)
-        {
-            if (customer == null)
-            {
-                throw new ArgumentNullException("customer");
-            }
-            else
-            {
-                this.Update(customer);
-                await SaveAsync();
-            }
-        }
-
-
-        public async Task DeleteAsync(Customers customer)
-        {
-            if (customer == null)
-            {
-                throw new ArgumentNullException("customer");
-            }
-            else
-            {
-                this.Delete(customer);
-                await SaveAsync();
-            }
-        }
-
         public async Task<Customers> GetOneByIdAsync(string id)
         {
-            return await this.GetByCondition(x => x.CustomerId == id).FirstOrDefaultAsync();
+            return await this.GetOneAsync(x => x.CustomerId == id);
         }
 
-        public async Task<IEnumerable<Customers>> GetAllAsync()
-        {
-            return await this.GetAll().ToListAsync();
-        }
-
+       
 
         public async Task<bool> ExistAsync(string id)
         {
-            return await GetByCondition(x => x.CustomerId == id).AnyAsync();
+            return await this.ExistAsync(x => x.CustomerId == id);
         }
 
 

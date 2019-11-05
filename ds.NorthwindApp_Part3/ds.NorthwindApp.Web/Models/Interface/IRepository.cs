@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -9,16 +8,16 @@ namespace ds.NorthwindApp.Web.Models.Interface
     public interface IRepository<TEntity>
         where TEntity : class
     {
-        void Create(TEntity instance);
+        Task CreateAsync(TEntity instance);
 
-        void Update(TEntity instance);
+        Task UpdateAsync(TEntity instance);
 
-        void Delete(TEntity instance);
+        Task DeleteAsync(TEntity instance);
 
-        IQueryable<TEntity> GetAll();
+        Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> expression);
 
-        IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression);
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task SaveAsync();
+        Task<bool> ExistAsync(Expression<Func<TEntity, bool>> expression);
     }
 }

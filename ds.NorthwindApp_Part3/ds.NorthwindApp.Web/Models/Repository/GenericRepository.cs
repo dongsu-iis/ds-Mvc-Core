@@ -1,5 +1,7 @@
 ﻿using ds.NorthwindApp.Web.Models.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -17,34 +19,58 @@ namespace ds.NorthwindApp.Web.Models.Repository
             db = context;
         }
 
-        public void Create(TEntity instance)
+        public async Task CreateAsync(TEntity instance)
         {
-            db.Set<TEntity>().Add(instance);
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+            else
+            {
+                await db.Set<TEntity>().AddAsync(instance);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public void Update(TEntity instance)
+        public async Task UpdateAsync(TEntity instance)
         {
-            db.Set<TEntity>().Update(instance);
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+            else
+            {
+                db.Set<TEntity>().Update(instance);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public void Delete(TEntity instance)
+        public async Task DeleteAsync(TEntity instance)
         {
-            db.Set<TEntity>().Remove(instance);
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+            else
+            {
+                db.Set<TEntity>().Remove(instance);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public IQueryable<TEntity> GetByCondition(Expression<Func<TEntity, bool>> expression)
+        public async Task<TEntity> GetOneAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return db.Set<TEntity>().Where(expression);
+            return await db.Set<TEntity>().FirstOrDefaultAsync(expression);
         }
 
-        public IQueryable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return db.Set<TEntity>();
+            return await db.Set<TEntity>().ToListAsync();
         }
 
-        public async Task SaveAsync()
+        public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> expression)
         {
-            await db.SaveChangesAsync();
+            return await db.Set<TEntity>().AnyAsync(expression);
         }
 
     }
